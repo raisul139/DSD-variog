@@ -1,0 +1,39 @@
+module jk(q,qbar,j,k,clr,clk);
+
+output q,qbar;
+input j,k,clr,clk;
+nand(a,qbar,j,clk,clr);
+nand(b,q,k,clk);
+nand(y,a,ybar);
+nand(ybar,b,clr,y);
+not(clkbar,clk);
+nand(c,y,clkbar);
+nand(d,ybar,clkbar);
+nand(q,c,qbar);
+nand(qbar,q,clr,d);
+
+endmodule
+module counter(q,j,k,clk,clr);
+output [3:0] q;
+input j,k,clk,clr;
+wire [3:0] qb;
+jk j1(q[0],qb[0],j,k,clr,clk);
+jk j2(q[1],qb[1],j,k,clr,q[0]);
+jk j3(q[2],qb[2],j,k,clr,q[1]);
+jk j4(q[3],qb[3],j,k,clr,q[2]);
+endmodule
+
+module ripple;
+reg j,k,clr,clk;
+wire [3:0] q;
+ counter k1(q,j,k,clk,clr);
+initial 
+clk=1'b0;
+always
+#10 clk=~clk;
+initial
+begin
+j=1'b1;k=1'b1;clr=1'b0;
+#2 clr=1'b1;
+end
+endmodule
