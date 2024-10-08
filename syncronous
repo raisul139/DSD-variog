@@ -1,0 +1,39 @@
+module jk(q,qbar,j,k,clr,clk);
+
+output q,qbar;
+input j,k,clr,clk;
+nand(a,qbar,j,clk,clr);
+nand(b,q,k,clk);
+nand(y,a,ybar);
+nand(ybar,b,clr,y);
+not(clkbar,clk);
+nand(c,y,clkbar);
+nand(d,ybar,clkbar);
+nand(q,c,qbar);
+nand(qbar,q,clr,d);
+
+endmodule
+module counter1(q,j,k,clk,clr);
+
+output [3:0] q;
+input j,k,clk,clr;
+and(test,q[0],q[1]);
+not(q3b,q[2]);
+or(j4,q3b,test);
+not(test1,q[0]);
+and(k3,q[1],test1);
+not(t,q[2]);
+and(t2,q[3],t);
+xor(tt,q[0],q[3]);
+or(j2,t2,tt);
+not(j1,q[1]);
+not(k1,q[1]);
+
+wire [3:0] qb;
+wire j3=q[1];
+wire k4=q[2];
+jk x1(q[0],qb[0],j1,k1,clr,clk);
+jk x2(q[1],qb[1],j2,1'b1,clr,clk);
+jk x3(q[2],qb[2],j3,k3,clr,clk);
+jk x4(q[3],qb[3],j4,k4,clr,clk);
+endmodule
