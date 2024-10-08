@@ -1,0 +1,25 @@
+module BCDtoEX3(w,x,y,z,A,B,C,D);
+output w,x,y,z;
+input  A,B,C,D;
+not(z,D);
+xor(p,C,D);
+not(y,p);
+or(o,C,D);
+xor(x,B,o);
+and(s,B,o);
+or(w,A,s);
+endmodule
+
+module BCDtoEX3Tester;
+reg A,B,C,D;
+wire w,x,y,z;
+BCDtoEX3 test(w,x,y,z,A,B,C,D);
+initial
+begin
+A=1'b0;B=1'b0;C=1'b0;D=1'b0;
+#100 A=1'b0;B=1'b0;C=1'b0;D=1'b1; 
+#100 A=1'b0;B=1'b0;C=1'b1;D=1'b0;
+#100 A=1'b0;B=1'b1;C=1'b0;D=1'b0;
+#100 A=1'b0;B=1'b1;C=1'b0;D=1'b1;
+end
+endmodule
