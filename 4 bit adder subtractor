@@ -1,0 +1,49 @@
+module halfadder(s,c,a,b);
+output s,c;
+input a,b;
+xor(s,a,b);
+and(c,a,b);
+endmodule
+
+module fullAdder(sum,carry,x,y,z);
+ output sum,carry;
+ input  x,y,z;
+ halfadder f1(S,c1,x,y);
+ halfadder f2(sum,c2,S,z);
+ or(carry,c1,c2);   
+endmodule
+
+module FourbitAdder(SUM,Cout,A,B,Cin);
+	input [3:0] A,B;
+	input Cin;
+	output[3:0] SUM;
+	output Cout;
+xor(t1,B[0],Cin);
+xor(t2,B[1],Cin);
+xor(t3,B[2],Cin);
+xor(t4,B[3],Cin);
+
+
+  fullAdder x1(SUM[0],d1,A[0],t1,Cin);
+  fullAdder x2(SUM[1],d2,A[1],t2,d1);
+  fullAdder x3(SUM[2],d3,A[2],t3,d2);
+  fullAdder x4(SUM[3],Cout,A[3],t4,d3);
+  
+	
+
+endmodule
+
+module testFourbitAdder;
+ reg [3:0] A,B;
+ reg Cin;
+ wire [3:0] SUM;
+ wire Cout;
+ FourbitAdder test(SUM,Cout,A,B,Cin);
+initial
+begin
+A=4'b1010;B=4'b1011;Cin=1'b0;
+#100 A=4'b1001;B=4'b1010;Cin=1'b1;
+#100 A=4'b1111;B=4'b1000;Cin=1'b1;
+#100 A=4'b1011;B=4'b1001;Cin=1'b0;
+end
+endmodule 
